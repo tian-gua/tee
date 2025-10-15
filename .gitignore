@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# PyPI configuration (contains sensitive tokens)
+.pypirc
+
 # C extensions
 *.so
 
@@ -171,3 +174,6 @@ cython_debug/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# PyPI configuration (may contain sensitive tokens)
+.pypirc
