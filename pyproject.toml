@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tee-orm-tiangua"
+name = "tee-orm"
 version = "0.1.0"
 description = "一个小巧的 Python ORM 框架，带有完整的类型系统支持"
 readme = "README.md"

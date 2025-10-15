@@ -17,7 +17,7 @@
 ## 📦 安装
 
 ```bash
-pip install tee-orm-tiangua
+pip install tee-orm
 ```
 
 ## 🚀 快速开始
