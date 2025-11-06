@@ -152,3 +152,19 @@ class Select(Generic[M]):
         stmt = Statement(sql=sql, args=args)
         rows = Executor.select(stmt)
         return [self._model(**row) for row in rows]
+
+    def count(self) -> int:
+        """统计记录数，返回数量"""
+        table_name = self._model.get_table_name()
+        sql = f"SELECT COUNT(*) AS count FROM {table_name}"
+        args = ()
+
+        # 构建 WHERE 部分
+        if self._where.count() > 0:
+            where_sql, where_args = self._where.tree().parse("%s")
+            sql += f" WHERE {where_sql}"
+            args += where_args
+
+        stmt = Statement(sql=sql, args=args)
+        rows = Executor.select(stmt)
+        return rows[0]["count"]

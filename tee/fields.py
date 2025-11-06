@@ -1,3 +1,4 @@
+import decimal
 from typing import Any, Optional, Type, Union, overload
 
 
@@ -61,6 +62,34 @@ class Int(Field):
         if not hasattr(instance, "_values"):
             instance._values = {}
         instance._values[self.name] = value
+
+
+class Decimal(Field):
+    def __init__(self):
+        super().__init__("decimal")
+
+    @overload
+    def __get__(self, instance: None, owner: Optional[Type] = None) -> "Decimal": ...
+
+    @overload
+    def __get__(self, instance: object, owner: Optional[Type] = None) -> Optional[decimal.Decimal]: ...
+
+    def __get__(self, instance: Any, owner: Optional[Type] = None) -> Union["Decimal", Optional[decimal.Decimal]]:
+        """描述符协议：获取字段值"""
+        if instance is None:
+            return self
+        if not hasattr(instance, "_values"):
+            return None
+        value: Optional[decimal.Decimal] = instance._values.get(self.name, None)
+        return value
+
+    def __set__(self, instance: Any, value: Optional[decimal.Decimal]) -> None:
+        """描述符协议：设置字段值"""
+        if instance is None:
+            raise ValueError("Instance cannot be None when setting a value.")
+        if not hasattr(instance, "_values"):
+            instance._values = {}
+        instance._values[self.name] = decimal.Decimal(value) if value is not None else None
 
 
 class Float(Field):

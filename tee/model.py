@@ -73,6 +73,11 @@ class Model(metaclass=ModelMeta):
         return self._values.items()
 
     @classmethod
+    def field(cls, field_name: str) -> Field:
+        """获取指定字段"""
+        return cls._fields[field_name]
+
+    @classmethod
     def get_fields(cls) -> Dict[str, Field]:
         """获取所有字段"""
         return cls._fields
