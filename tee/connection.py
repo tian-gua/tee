@@ -17,9 +17,9 @@ class ConnectionContext:
         self.in_transaction = in_transaction
 
 
-def new_connection(db_name: str = "default", autocommit: bool = True):
+def new_connection(db_name: str = "default", autocommit: bool = True) -> Connection:
     db = get_db(db_name)
-    connection = pymysql.connect(
+    connection: Connection = pymysql.connect(
         host=db.host,
         port=db.port,
         user=db.user,
@@ -40,15 +40,7 @@ def get_connection(db_name: str = "default"):
 
     # 否则返回或创建普通连接
     if not hasattr(thread_local, "connection_context") or thread_local.connection_context is None:
-        db = get_db(db_name)
-        connection = pymysql.connect(
-            host=db.host,
-            port=db.port,
-            user=db.user,
-            password=db.password,
-            database=db.database,
-            cursorclass=pymysql.cursors.DictCursor,
-        )
+        connection = new_connection(db_name=db_name, autocommit=True)
         thread_local.connection_context = ConnectionContext(connection, in_transaction=False)
     return thread_local.connection_context.connection
 
