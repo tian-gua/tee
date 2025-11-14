@@ -47,7 +47,7 @@ class Insert(Generic[M]):
                 sql += f' ON DUPLICATE KEY UPDATE {",".join([f"{k}=VALUES({k})" for k in duplicate_key_update])}'
 
         stmt = Statement(sql, args)
-        return Executor.execute(stmt)
+        return Executor.insert(stmt)
 
     def execute_bulk(self, data_list: List[Dict[str, Any]]) -> int:
         if len(data_list) == 0:
