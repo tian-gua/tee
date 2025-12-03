@@ -78,7 +78,7 @@ class Update(Generic[M]):
 
     def execute(self) -> int:
         table_name = self._model.get_table_name()
-        sql = f'UPDATE {table_name} SET {",".join([f"{k}=?" for k in self._update_fields.keys()])}'
+        sql = f'UPDATE {table_name} SET {",".join([f"{k}=%s" for k in self._update_fields.keys()])}'
         args = tuple(self._update_fields.values())
 
         # 构建 WHERE 部分
@@ -89,5 +89,5 @@ class Update(Generic[M]):
         else:
             raise ValueError("Update operation requires at least one condition to prevent full table deletion.")
 
-        stmt = Statement(sql, where_args)
+        stmt = Statement(sql, args)
         return Executor.execute(stmt)
